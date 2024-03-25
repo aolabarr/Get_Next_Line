@@ -20,7 +20,7 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	line = NULL;
-if(!buffer)
+	if(!buffer)
 	{
 		num = ft_read_next_buffer(fd, buffer);
 		start = 0;
