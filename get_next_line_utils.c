@@ -26,6 +26,20 @@ size_t	ft_linelen(const char *str)
 	return (count);
 }
 
+size_t	ft_strlen_gnl(const char *str)
+{
+	size_t	count;
+
+	count = 0;
+	while (str[count] != '\0' && count < BUFFER_SIZE - 1)
+		count++;
+    if (count == BUFFER_SIZE - 1 && str[count] != '\0')
+        count = 0;
+    else if (count == BUFFER_SIZE - 1 || str[count] == '\0') 
+        count++;
+	return (count);
+}
+
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	size_t	i;

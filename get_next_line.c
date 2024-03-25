@@ -16,10 +16,16 @@ char	*get_next_line(int fd)
 {
 	static char *buffer;
 	static int	start;
-	int			num;
+	size_t		num;
 	char		*line;
 
 	line = NULL;
+	start = 0;
+	if (start != 0)
+	{
+		line = bufferjoin(line, buffer + start, BUFFER_SIZE - start);
+		free(buffer);
+	}
 	if(!buffer)
 	{
 		num = ft_read_next_buffer(fd, buffer);
@@ -30,24 +36,25 @@ char	*get_next_line(int fd)
 		line = bufferjoin(line, buffer, num);
 		num = ft_read_next_buffer(fd, buffer);
 	}
-	if num == BUFFER_SIZE
+	if (ft_linelen(buffer))
 	{
-		line = ft_manage_line(buffer, start, finbuf);
-		start = start + ft_linelen(line);
+		line = bufferjoin(line, buffer, ft_linelen(buffer));
+		start = start + ft_linelen(buffer); 
 		return(line);
 	}
-	else if ft_strlen(buffer + start)
+	else if (ft_strlen_gnl(buffer))
 	{
-		line = ft_manage_final(bufplus, buffer, start, finbuf);
-		start = start + ft_finalfilelen(line);
+		line = bufferjoin(line, buffer, ft_strlen_gnl(buffer));
 		return(line);
 	}
 }
 
 size_t	ft_read_next_buffer(int fd, char *buffer)
 {
+	size_t	num;
+
 	if !(buffer)
-		buffer = malloc((BUFFER_SIZE) * sizeof(char));
+		buffer = malloc(BUFFER_SIZE * sizeof(char));
 	num = read(fd, buffer, sizeof(buffer));
 	return(num);
 }
@@ -60,16 +67,16 @@ char	*ft_bufferjoin(char line, char *buffer, int num)
 	{
 		if (num == BUFFER_SIZE)
 		{
-			str = malloc((sizeof(line) + BUFFER_SIZE * sizeof(char));
+			str = malloc(sizeof(line) + BUFFER_SIZE * sizeof(char));
 			ft_memcpy(str, line, sizeof(line));	
-			ft_memcpy(str + sizeof(line) + 1, buffer, sizeof(buffer));
+			ft_memcpy(str + sizeof(line), buffer, sizeof(buffer));
 			free(line);
 		}
 		else	
 		{
-			str = malloc((sizeof(line) + num * sizeof(char));
+			str = malloc(sizeof(line) + num * sizeof(char));
 			ft_memcpy(str, line, sizeof(line));	
-			ft_memcpy(str + sizeof(line) + 1, buffer, num * sizeof(char));
+			ft_memcpy(str + sizeof(line), buffer, num * sizeof(char));
 			free(line);
 		}
 	}
