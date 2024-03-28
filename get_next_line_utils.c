@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:51:10 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/28 16:51:11 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/03/28 18:30:45 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin_gnl(char const *s1, char const *s2)
+char	*ft_strjoin_gnl(char *s1, char *s2)
 {
 	char	*str;
 

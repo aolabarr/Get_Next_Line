@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:58:55 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/28 16:51:08 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/03/28 18:49:01 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*get_next_line(int fd)
 {
 	static char *bufaux;
 	char		*line;
+	char		*tmp;
 
 	line = NULL;
 	if (!bufaux)
@@ -27,7 +28,7 @@ char	*get_next_line(int fd)
 		tmp = bufaux;
 		bufaux = read_file(fd);
 		line = extract_line(bufaux);
-		line = ft_strjoin(tmp, line);
+		line = ft_strjoin_gnl(tmp, line);
 		bufaux = save_rest(bufaux, ft_strlen(line));
 	}
 	else
@@ -44,7 +45,7 @@ char	*read_file(int fd)
 	char	*inter;
 	size_t	bytes_read;
 
-	buffer = malloc(BUFFER_SIZE + 1, sizeof(char));
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return(NULL);
 	buffer[BUFFER_SIZE + 1] = '\0';
@@ -58,7 +59,7 @@ char	*read_file(int fd)
 				return(buffer);
 			else
 			{
-				inter = ft_strjoin_gnl(inter, buffer)
+				inter = ft_strjoin_gnl(inter, buffer);
 				if (!inter)
 					return(NULL);	
 				return(inter);
@@ -67,9 +68,9 @@ char	*read_file(int fd)
 		else
 		{
 			if(!inter)
-				inter = strdup(buffer);
+				inter = ft_strdup(buffer);
 			else
-				inter = strjoin_gnl(inter, buffer);
+				inter = ft_strjoin_gnl(inter, buffer);
 			if (!inter)
 				return(NULL);
 		}
@@ -82,9 +83,11 @@ char	*extract_line(char *bufaux)
 {
 	char	*newline;
 	size_t	len;
-	if ft_strchr(buffer,'\n')
+
+	newline = NULL;
+	if (ft_strchr(bufaux,'\n'))
 	{
-		len = ft_strchr(buffer,'\n') - bufaux + 1;
+		len = ft_strchr(bufaux,'\n') - bufaux + 1;
 		newline = malloc(len * sizeof(char));
 		ft_strlcpy(newline, bufaux, len);
 	}
@@ -93,4 +96,14 @@ char	*extract_line(char *bufaux)
 		
 	}
 	return(newline);
+}
+
+char	*save_rest(char *bufaux, size_t len)
+{
+	char	*rest;
+
+	rest = NULL;
+	len = ft_strlen(bufaux);
+
+	return(rest);
 }
