@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:51:10 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/28 15:48:40 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:51:11 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,17 @@ size_t	ft_strlen(const char *str)
 		str++;
 	}
 	return (count);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*str;
+	size_t	len;
+
+	len = ft_strlen(s) + 1;
+	str = malloc(len * sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s, len);
+	return (str);
 }
