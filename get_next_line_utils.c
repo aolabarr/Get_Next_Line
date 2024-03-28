@@ -6,51 +6,78 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:51:10 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/23 16:51:14 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:48:40 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_linelen(const char *str)
-{
-	size_t	count;
-
-	count = 0;
-	while (str[count] != '\n' && count < BUFFER_SIZE - 1))
-		count++;
-    if (count == BUFFER_SIZE - 1 && str[count] != '\n')
-        count = 0;
-    else if (count == BUFFER_SIZE - 1 || str[count] == '\n') 
-        count++;
-	return (count);
-}
-
-size_t	ft_strlen_gnl(const char *str)
-{
-	size_t	count;
-
-	count = 0;
-	while (str[count] != '\0' && count < BUFFER_SIZE - 1)
-		count++;
-    if (count == BUFFER_SIZE - 1 && str[count] != '\0')
-        count = 0;
-    else if (count == BUFFER_SIZE - 1 || str[count] == '\0') 
-        count++;
-	return (count);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+char	*ft_strchr(const char *s, int c)
 {
 	size_t	i;
+	char	aux;
+	char	*str;
 
+	aux = (char)c;
+	c = aux;
+	str = (char *)s;
 	i = 0;
-	if (src == NULL && dst == NULL)
-		return (dst);
-	while (i < n)
+	while (str[i] != '\0')
 	{
-		((char *)dst)[i] = ((const char *)src)[i];
+		if (str[i] == c)
+			return (&str[i]);
 		i++;
 	}
-	return (dst);
+	if (c == '\0')
+		return (&str[i]);
+	return (NULL);
+}
+
+char	*ft_strjoin_gnl(char const *s1, char const *s2)
+{
+	char	*str;
+
+	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
+	ft_strlcpy(str + ft_strlen(s1), s2, ft_strlen(s2) + 1);
+	free(s1);
+	return (str);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	i;
+	int		bool;
+
+	bool = 0;
+	i = 0;
+	while (src[i] != '\0')
+	{
+		if (i < size - 1 && size != 0)
+			dst[i] = src[i];
+		else if (i == size - 1 && size != 0)
+		{
+			dst[i] = '\0';
+			bool = 1;
+		}
+		i++;
+	}
+	if (bool == 0 && size != 0)
+		dst[i] = '\0';
+	return (i);
+}
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	count;
+
+	count = 0;
+	while (*str != '\0')
+	{
+		count++;
+		str++;
+	}
+	return (count);
 }
