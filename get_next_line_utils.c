@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:51:10 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/28 18:30:45 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/03/29 18:02:53 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 		return (NULL);
 	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
 	ft_strlcpy(str + ft_strlen(s1), s2, ft_strlen(s2) + 1);
-	free(s1);
+	ft_free(s1);
 	return (str);
 }
 

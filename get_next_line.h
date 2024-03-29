@@ -6,15 +6,15 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:50:28 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/28 18:46:21 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:03:18 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# ifndef BUFFER_SIZE
-# define BUFFER_SIZE 256
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 10
 #endif
 
 # include <stdlib.h>
@@ -27,7 +27,7 @@
 char    *get_next_line(int fd);
 char    *read_file(int fd);
 char    *extract_line(char *bufaux);
-char    *save_rest(char *bufaux, size_t len);
+void    ft_free(char *str);
 
 char    *ft_strchr(const char *s, int c);
 char    *ft_strjoin_gnl(char *s1, char *s2);
