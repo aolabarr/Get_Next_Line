@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:58:55 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/29 18:02:50 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/03/30 18:00:54 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,32 @@ char	*get_next_line(int fd)
 	static char *aux;
 	char		*line;
 	char		*tmp;
+	size_t		bytes_read;
 
 	line = NULL;
 	printf("Prueba 000\n");
 	if (!aux)
-		aux = read_file(fd);
-	printf("Prueba 100\n");
+		aux = read_file(fd, &bytes_read);
 	if (!aux)
 		return(NULL);
 	printf("Prueba 110\n");
-	if (!ft_strchr(aux, '\n'))
+	while(!ft_strchr(aux, '\n') && bytes_read > 0)
 	{
-		printf("Prueba 120\n");
-		tmp = aux;
-		aux = read_file(fd);
-		line = extract_line(aux);
-		aux = ft_strdup(aux + ft_strlen(line));
-		line = ft_strjoin_gnl(tmp, line);
+		printf("Prueba 132\n");
+		tmp = read_file(fd, &bytes_read);
+		aux = ft_strjoin_gnl(aux, tmp);
+		printf("Prueba 133 aux: %s\n",aux);
+		ft_free(tmp);
 	}
-	else
+	if (ft_strchr(aux, '\n'))
 	{
-		printf("Prueba 130\n");
-		printf("aux:%s\n",aux);
+		printf("Prueba 130 aux: %s\n",aux);
 		line = extract_line(aux);
 		//printf("Prueba 131 linea: %s\n",line);
 		tmp = ft_strdup(aux + ft_strlen(line));
 		ft_free(aux);
 		aux = tmp;
-		printf("Prueba 132 aux: %s\n",aux);
+		printf("Prueba 131 aux: %s\n",aux);
 	}
 	if (ft_strlen(aux) == 0)
 		ft_free(aux);
@@ -52,38 +50,51 @@ char	*get_next_line(int fd)
 	return(line);
 }
 
-char	*read_file(int fd)
+char	*read_file(int fd, size_t *bytes_read)
 {
 	char	buffer[BUFFER_SIZE + 1];
-	char	*inter;
-	size_t	bytes_read;
+	char	*aux;
 
-	inter = NULL;
+	aux = NULL;
 	printf("Prueba 210\n");
-	bytes_read = 1;
+	*bytes_read = 1;
 	while (bytes_read > 0)
 	{
 		printf("Prueba 220\n");
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		buffer[bytes_read] = '\0';
-		printf("Prueba 230: bytes read: %lu buffer: %s\n", bytes_read, buffer);
-		if(!inter)
-			inter = ft_strdup(buffer);
+		*bytes_read = read(fd, buffer, BUFFER_SIZE);
+		buffer[*bytes_read] = '\0';
+		printf("Prueba 230: bytes read: %lu buffer: %s\n", *bytes_read, buffer);
+		if(!aux)
+			aux = ft_strdup(buffer);
 		else
-			inter = ft_strjoin_gnl(inter, buffer);
-		if (!inter)
+			aux = ft_strjoin_gnl(aux, buffer);
+		if (!aux)
 			return(NULL);
-		printf("Prueba 240: inter: %s\n", inter);
-		if (ft_strchr(inter, '\n'))
+		printf("Prueba 240: aux: %s\n", aux);
+		if (ft_strchr(aux, '\n'))
 		{
-			printf("Prueba 250\n");
-			return(inter);
+			//printf("Prueba 250: aux: %s\n", aux);
+			return(aux);
 		}
 	}
+	if (ft_strlen(aux) == 0 && *bytes_read <= 0)
+		return(NULL);
 	printf("Prueba EOF\n");
 	return(NULL);
 }
+/*
+char	*read_from_file(int fd)
+{
+	char	buffer[BUFFER_SIZE + 1];
+	size_t	bytes_read;
 
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	if (bytes_read <= 0)
+		return(NULL);
+	buffer[bytes_read] = '\0';
+	return(buffer);
+}
+*/
 char	*extract_line(char *aux)
 {
 	char	*newline;
@@ -104,5 +115,8 @@ void	ft_free(char *str)
 {
 	printf("Prueba 700\n");
 	if (str)
+	{
+		//printf("str: %s\n", str);
 		free(str);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:50:28 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/29 16:03:18 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/03/30 17:58:29 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 
 char    *get_next_line(int fd);
-char    *read_file(int fd);
+char	*read_file(int fd, size_t *bytes_read);
 char    *extract_line(char *bufaux);
 void    ft_free(char *str);
 
@@ -36,3 +36,7 @@ size_t  ft_strlcpy(char *dst, const char *src, size_t size);
 size_t  ft_strlen(const char *str);
 
 #endif
+
+// unistd	- read
+// stdlib	- malloc
+// fcntl	- open
