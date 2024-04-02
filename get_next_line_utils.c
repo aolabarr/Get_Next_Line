@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:51:10 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/29 18:02:53 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:56:00 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	char	*str;
 
 	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	//printf("%p\tPrueba 400\n", str);
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
@@ -49,9 +50,9 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
-	int		bool;
+	int		lock;
 
-	bool = 0;
+	lock = 0;
 	i = 0;
 	while (src[i] != '\0')
 	{
@@ -60,11 +61,11 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 		else if (i == size - 1 && size != 0)
 		{
 			dst[i] = '\0';
-			bool = 1;
+			lock = 1;
 		}
 		i++;
 	}
-	if (bool == 0 && size != 0)
+	if (lock == 0 && size != 0)
 		dst[i] = '\0';
 	return (i);
 }
@@ -89,6 +90,7 @@ char	*ft_strdup(const char *s)
 
 	len = ft_strlen(s) + 1;
 	str = malloc(len * sizeof(char));
+	//printf("%p\tPrueba 500\n", str);
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s, len);

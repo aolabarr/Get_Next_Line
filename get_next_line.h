@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:50:28 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/03/30 17:58:29 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:18:54 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 12
+#define BUFFER_SIZE 100
 #endif
 
 # include <stdlib.h>
