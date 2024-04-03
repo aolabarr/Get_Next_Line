@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:58:55 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/03 14:44:26 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/03 15:56:54 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (!aux_buffer)
 		aux_buffer = read_file(fd);
-	if (!aux_buffer)
-		return (NULL);
-	if (!ft_strchr(aux_buffer, '\n') && !ft_strchr(aux_buffer, EOF))
+	else if (!ft_strchr(aux_buffer, '\n') && !ft_strchr(aux_buffer, EOF))
 	{
 		tmp = read_file(fd);
 		if (!tmp)
@@ -34,15 +32,17 @@ char	*get_next_line(int fd)
 			return (ft_free(tmp), NULL);
 		ft_free(tmp);
 	}
+	if (!aux_buffer)
+		return (NULL);
 	line = extract_line(aux_buffer);
 	if (!line)
 		return (ft_free(aux_buffer), NULL);
 	if (line[0] == '\0')
-		return (ft_free(line), ft_free(aux_buffer), NULL); //hay que liberar aux buffer
+		return (ft_free(line), ft_free(aux_buffer), NULL); //liberar aux buffer da error
 	//printf("line\t%s\tget_next_line()\n", line);
 	tmp = ft_strdup(aux_buffer + ft_strlen(line));
 	if (!tmp)
-		return (NULL);
+		return (ft_free(aux_buffer), ft_free(line), NULL);
 	//printf("aux\t%s\n", tmp);
 	ft_free(aux_buffer);
 	aux_buffer = tmp;
@@ -60,9 +60,9 @@ char	*read_file(int fd)
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		//printf("bytes: %zu\n", bytes_read);
+		printf("bytes: %zu\n", bytes_read);
 		if (bytes_read < 0)
-			return (NULL);
+			return (ft_free(aux), NULL);
 		buffer[bytes_read] = '\0';
 		if (!aux)
 			aux = ft_strdup(buffer);
@@ -104,6 +104,7 @@ void	ft_free(char *str)
 {
 	if (str)
 	{
+		//printf("%p\n",str);
 		free(str);
 		str = NULL;
 	}
