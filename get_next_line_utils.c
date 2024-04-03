@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:51:10 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/03 15:59:16 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:46:01 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 		return (NULL);
 	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
 	ft_strlcpy(str + ft_strlen(s1), s2, ft_strlen(s2) + 1);
-	ft_free(s1);
+	ft_free(&s1);
 	return (str);
 }
 
@@ -88,11 +88,12 @@ char	*ft_strdup(const char *s)
 	char	*str;
 	size_t	len;
 
-	len = ft_strlen(s) + 1;
-	str = malloc(len * sizeof(char));
+	len = ft_strlen(s);
+	str = malloc((len + 1) * sizeof(char));
 	//printf("%p\tPrueba 500\n", str);
 	if (!str)
 		return (NULL);
-	ft_strlcpy(str, s, len);
+	ft_strlcpy(str, s, len + 1);
+	str[len] = '\0';
 	return (str);
 }

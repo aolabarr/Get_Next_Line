@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aolabarr <aolabarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:50:28 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/02 12:18:54 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:33:45 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,18 @@
 
 char    *get_next_line(int fd);
 char    *extract_line(char *bufaux);
-void    ft_free(char *str);
+char	*save_rest(char *aux, size_t len);
+void    ft_free(char **str);
 char	*read_from_file(int fd);
 char	*read_file(int fd);
+void    ft_bzero(void *str, size_t n);
 
 char    *ft_strchr(const char *s, int c);
 char    *ft_strjoin_gnl(char *s1, char *s2);
 char    *ft_strdup(const char *s);
 size_t  ft_strlcpy(char *dst, const char *src, size_t size);
 size_t  ft_strlen(const char *str);
+//void	ft_free2(char **str);
 
 #endif
 
