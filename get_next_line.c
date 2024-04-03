@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:58:55 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/02 20:34:30 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/03 14:44:26 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,31 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*tmp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (NULL);
-	line = NULL;
 	if (!aux_buffer)
 		aux_buffer = read_file(fd);
 	if (!aux_buffer)
 		return (NULL);
-	if (!ft_strchr(aux_buffer, '\n') || !ft_strchr(aux_buffer, EOF))
+	if (!ft_strchr(aux_buffer, '\n') && !ft_strchr(aux_buffer, EOF))
 	{
 		tmp = read_file(fd);
+		if (!tmp)
+			return (ft_free(aux_buffer), NULL);
 		aux_buffer = ft_strjoin_gnl(aux_buffer, tmp);
+		if (!aux_buffer)
+			return (ft_free(tmp), NULL);
 		ft_free(tmp);
 	}
 	line = extract_line(aux_buffer);
+	if (!line)
+		return (ft_free(aux_buffer), NULL);
+	if (line[0] == '\0')
+		return (ft_free(line), ft_free(aux_buffer), NULL); //hay que liberar aux buffer
 	//printf("line\t%s\tget_next_line()\n", line);
 	tmp = ft_strdup(aux_buffer + ft_strlen(line));
+	if (!tmp)
+		return (NULL);
 	//printf("aux\t%s\n", tmp);
 	ft_free(aux_buffer);
 	aux_buffer = tmp;
@@ -53,7 +62,7 @@ char	*read_file(int fd)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		//printf("bytes: %zu\n", bytes_read);
 		if (bytes_read < 0)
-			break ;
+			return (NULL);
 		buffer[bytes_read] = '\0';
 		if (!aux)
 			aux = ft_strdup(buffer);
@@ -63,9 +72,9 @@ char	*read_file(int fd)
 		if (!aux)
 			return (NULL);
 		if (ft_strchr(aux, '\n') || bytes_read == 0)
-			return (aux);
+			break ;
 	}
-	return (NULL);
+	return (aux);
 }
 
 char	*extract_line(char *aux)
@@ -96,6 +105,6 @@ void	ft_free(char *str)
 	if (str)
 	{
 		free(str);
-	//	str = NULL;
+		str = NULL;
 	}
 }
