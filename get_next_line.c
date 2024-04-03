@@ -6,7 +6,7 @@
 /*   By: aolabarr <aolabarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:58:55 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/03 19:39:17 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/03 21:20:38 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 char	*get_next_line(int fd)
 {
-	static char	*aux_buffer;
+	static char	*aux_buffer = NULL;
 	char		*line;
 	char		*tmp1;
 	//char		*tmp2;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (NULL);
-	tmp1 = read_file(fd);
+	tmp1 = read_file(fd, aux_buffer);
 	if (!tmp1)
 		return (ft_free(&aux_buffer), ft_free(&line), ft_free(&tmp1), NULL);
 	if (aux_buffer)
@@ -44,11 +44,15 @@ char	*get_next_line(int fd)
 	*/
 	aux_buffer = save_rest(aux_buffer, ft_strlen(line));
 	if (!aux_buffer)
-		return (ft_free(&aux_buffer), ft_free(&line), NULL);
+	{
+		ft_free(&aux_buffer);
+		aux_buffer = NULL;
+		return (ft_free(&line), NULL);
+	}
 	return (line);
 }
 
-char	*read_file(int fd)
+char	*read_file(int fd, char *aux_buffer)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	char	*aux;
@@ -60,17 +64,24 @@ char	*read_file(int fd)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return (ft_free(&aux), NULL);
+		{
+			ft_free(&aux_buffer);
+			aux_buffer = NULL;
+			ft_free(&aux);
+			aux = NULL;
+			return (NULL);
+		}
 		buffer[bytes_read] = '\0';
 		if (!aux)
-			aux = ft_strdup(buffer);
-		else
-			aux = ft_strjoin_gnl(aux, buffer);
+			aux = ft_strdup("");
+		aux = ft_strjoin_gnl(aux, buffer);
+		ft_bzero(buffer, BUFFER_SIZE + 1);
 		if (!aux)
 			return (NULL);
 		if (ft_strchr(aux, '\n') || bytes_read == 0)
 			break ;
 	}
+	//printf("zzzzzzzzz\n");
 	return (aux);
 }
 
@@ -99,6 +110,7 @@ char	*save_rest(char *aux, size_t len)
 
 	rest = ft_strdup(aux + len);
 	ft_free(&aux);
+	aux = NULL;
 	return (rest);
 }
 
