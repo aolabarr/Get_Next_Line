@@ -6,7 +6,7 @@
 /*   By: aolabarr <aolabarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:58:55 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/03 21:20:38 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:09:53 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ char	*get_next_line(int fd)
 	//char		*tmp2;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
-		return (NULL);
+		return (ft_free(&aux_buffer), NULL);
 	tmp1 = read_file(fd, aux_buffer);
 	if (!tmp1)
+	{
+		//write(1, "Hola",4);
 		return (ft_free(&aux_buffer), ft_free(&line), ft_free(&tmp1), NULL);
-	if (aux_buffer)
+	}
+		if (aux_buffer)
 		aux_buffer = ft_strjoin_gnl(aux_buffer, tmp1);
 	else
 		aux_buffer = ft_strdup(tmp1);
@@ -44,11 +47,7 @@ char	*get_next_line(int fd)
 	*/
 	aux_buffer = save_rest(aux_buffer, ft_strlen(line));
 	if (!aux_buffer)
-	{
-		ft_free(&aux_buffer);
-		aux_buffer = NULL;
 		return (ft_free(&line), NULL);
-	}
 	return (line);
 }
 
@@ -65,7 +64,6 @@ char	*read_file(int fd, char *aux_buffer)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
-			ft_free(&aux_buffer);
 			aux_buffer = NULL;
 			ft_free(&aux);
 			aux = NULL;
