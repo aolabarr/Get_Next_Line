@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:51:10 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/04 13:31:16 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:17:52 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,20 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
+
+	i = 0;
+	while (src[i] != '\0' && i < size - 1)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (i);
+}
+/*
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	i;
 	int		lock;
 
 	lock = 0;
@@ -70,7 +84,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 		dst[i] = '\0';
 	return (i);
 }
-
+*/
 size_t	ft_strlen(const char *str)
 {
 	size_t	count;
