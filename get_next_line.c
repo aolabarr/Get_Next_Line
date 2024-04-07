@@ -6,7 +6,7 @@
 /*   By: aolabarr <aolabarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:58:55 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/04 14:19:15 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/07 12:35:31 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,51 @@
 
 char	*get_next_line(int fd)
 {
-	static char	*aux_buffer;
+	static char	*backup;
 	char		*line;
-	char		*tmp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
-		return (ft_free(&aux_buffer), NULL);
-	tmp = read_file(fd);
-	if (!tmp)
-		return (ft_free(&aux_buffer), NULL);
-	if (!aux_buffer)
-		aux_buffer = ft_strdup("");
-	aux_buffer = ft_strjoin_gnl(aux_buffer, tmp);
-	if (!aux_buffer)
-		return (ft_free(&tmp), NULL);
-	ft_free(&tmp);
-	line = extract_line(aux_buffer);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (ft_free(&backup), NULL);
+	if (!backup || !ft_strchr(backup, '\n'))
+		backup = read_file(fd, backup);
+	if (!backup)
+		return (NULL);
+	line = extract_line(backup);
 	if (!line)
-		return (ft_free(&aux_buffer), NULL);
-	aux_buffer = save_rest(aux_buffer, ft_strlen(line));
-	if (!aux_buffer)
+		return (ft_free(&backup), NULL);
+	backup = save_rest(backup, ft_strlen(line));
+	if (!backup)
 		return (ft_free(&line), NULL);
 	return (line);
 }
 
-char	*read_file(int fd)
+char	*read_file(int fd, char *bkup)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	char	*aux;
-	size_t	bytes_read;
+	ssize_t	bytes_read;
 
 	aux = NULL;
 	bytes_read = 1;
+	if (!bkup)
+		bkup = ft_strdup("");
+	if (!bkup)
+		return (NULL);
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return (ft_free(&aux), NULL);
+			return (ft_free(&bkup), ft_free(&aux), NULL);
 		buffer[bytes_read] = '\0';
 		if (!aux)
-			aux = ft_strdup("");
+			aux = ft_strdup(bkup);
 		aux = ft_strjoin_gnl(aux, buffer);
 		if (!aux)
-			return (NULL);
-		if (ft_strchr(aux, '\n') || bytes_read == 0)
+			return (ft_free(&bkup), NULL);
+		if (ft_strchr(aux, '\n'))
 			break ;
 	}
-	return (aux);
+	return (ft_free(&bkup), aux);
 }
 
 char	*extract_line(char *aux)

@@ -6,7 +6,7 @@
 /*   By: aolabarr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:51:10 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/04 14:17:52 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/07 12:35:29 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	char	*str;
 
 	if (!s1 || !s2)
-		return (NULL);
+		return (ft_free(&s1), NULL);
 	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!str)
-		return (NULL);
+		return (ft_free(&s1), NULL);
 	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
 	ft_strlcpy(str + ft_strlen(s1), s2, ft_strlen(s2) + 1);
 	ft_free(&s1);
@@ -61,30 +61,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	dst[i] = '\0';
 	return (i);
 }
-/*
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
-{
-	size_t	i;
-	int		lock;
 
-	lock = 0;
-	i = 0;
-	while (src[i] != '\0')
-	{
-		if (i < size - 1 && size != 0)
-			dst[i] = src[i];
-		else if (i == size - 1 && size != 0)
-		{
-			dst[i] = '\0';
-			lock = 1;
-		}
-		i++;
-	}
-	if (lock == 0 && size != 0)
-		dst[i] = '\0';
-	return (i);
-}
-*/
 size_t	ft_strlen(const char *str)
 {
 	size_t	count;
