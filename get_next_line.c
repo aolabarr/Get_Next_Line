@@ -6,7 +6,7 @@
 /*   By: aolabarr <aolabarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 11:58:55 by aolabarr          #+#    #+#             */
-/*   Updated: 2024/04/07 12:35:31 by aolabarr         ###   ########.fr       */
+/*   Updated: 2024/04/07 13:09:33 by aolabarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,8 @@ char	*get_next_line(int fd)
 char	*read_file(int fd, char *bkup)
 {
 	char	buffer[BUFFER_SIZE + 1];
-	char	*aux;
 	ssize_t	bytes_read;
 
-	aux = NULL;
 	bytes_read = 1;
 	if (!bkup)
 		bkup = ft_strdup("");
@@ -48,17 +46,15 @@ char	*read_file(int fd, char *bkup)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return (ft_free(&bkup), ft_free(&aux), NULL);
-		buffer[bytes_read] = '\0';
-		if (!aux)
-			aux = ft_strdup(bkup);
-		aux = ft_strjoin_gnl(aux, buffer);
-		if (!aux)
 			return (ft_free(&bkup), NULL);
-		if (ft_strchr(aux, '\n'))
+		buffer[bytes_read] = '\0';
+		bkup = ft_strjoin_gnl(bkup, buffer);
+		if (!bkup)
+			return (NULL);
+		if (ft_strchr(bkup, '\n'))
 			break ;
 	}
-	return (ft_free(&bkup), aux);
+	return (bkup);
 }
 
 char	*extract_line(char *aux)
