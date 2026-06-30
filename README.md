@@ -1,3 +1,5 @@
+*Este proyecto ha sido desarrollado como parte del curriculum de 42 por [aolabarr](https://github.com/aolabarr/aolabarr).*
+
 # Get Next Line
 
 ## Descripción
